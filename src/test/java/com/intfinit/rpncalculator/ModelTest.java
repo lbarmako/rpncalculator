@@ -20,7 +20,7 @@ public class ModelTest {
     public void testPush() {
         testModel.push(new BigDecimal(1));
         testModel.push(new BigDecimal(2));
-        assertThat(testModel).extracting(Model::toString, Model::size).containsExactly("stack: 1 2", 2);
+        assertThat(testModel).extracting(Model::getContents, Model::size).containsExactly("1 2", 2);
     }
 
     /**
@@ -29,31 +29,31 @@ public class ModelTest {
     @Test(expected = IllegalArgumentException.class)
     public void testPushNull() {
         testModel.push(null);
-        assertThat(testModel).extracting(Model::toString, Model::size).containsExactly("stack: null", 1);
+        assertThat(testModel).extracting(Model::getContents, Model::size).containsExactly("null", 1);
     }
 
     @Test
     public void testAdd() {
         testModel.add(new BigDecimal(1), new BigDecimal(2));
-        assertThat(testModel).extracting(Model::toString, Model::size).containsExactly("stack: 3", 1);
+        assertThat(testModel).extracting(Model::getContents, Model::size).containsExactly("3", 1);
     }
 
     @Test
     public void testSubtract() {
         testModel.subtract(new BigDecimal(10), new BigDecimal(5));
-        assertThat(testModel).extracting(Model::toString, Model::size).containsExactly("stack: 5", 1);
+        assertThat(testModel).extracting(Model::getContents, Model::size).containsExactly("5", 1);
     }
 
     @Test
     public void testMultiply() {
         testModel.multiply(new BigDecimal(10), new BigDecimal(5));
-        assertThat(testModel).extracting(Model::toString, Model::size).containsExactly("stack: 50", 1);
+        assertThat(testModel).extracting(Model::getContents, Model::size).containsExactly("50", 1);
     }
 
     @Test
     public void testDivide() throws RPNCalculatorException {
         testModel.divide(new BigDecimal(10), new BigDecimal(5));
-        assertThat(testModel).extracting(Model::toString, Model::size).containsExactly("stack: 2", 1);
+        assertThat(testModel).extracting(Model::getContents, Model::size).containsExactly("2", 1);
     }
 
     @Test(expected = RPNCalculatorException.class)
@@ -64,7 +64,7 @@ public class ModelTest {
     @Test
     public void testSqrt() throws RPNCalculatorException {
         testModel.sqrt(new BigDecimal(2));
-        assertThat(testModel).extracting(Model::toString, Model::size).containsExactly("stack: 1.4142135623", 1);
+        assertThat(testModel).extracting(Model::getContents, Model::size).containsExactly("1.4142135623", 1);
         //TODO check.
     }
 
@@ -91,7 +91,7 @@ public class ModelTest {
         testModel.push(new BigDecimal(10));
         testModel.push(new BigDecimal(3));
         testModel.pop();
-        assertThat(testModel).extracting(Model::toString, Model::size).containsExactly("stack: 10", 1);
+        assertThat(testModel).extracting(Model::getContents, Model::size).containsExactly("10", 1);
     }
 
     @Test
@@ -102,7 +102,7 @@ public class ModelTest {
         testModel.push(new BigDecimal(-3.123456789));
         testModel.push(new BigDecimal(-3.1234567890));
         testModel.push(new BigDecimal(-3.01234567890123456789));
-        assertThat(testModel).extracting(Model::toString, Model::size)
-                .containsExactly("stack: 10 1.1 -3.12345 -3.123456789 -3.123456789 -3.0123456789", 6);
+        assertThat(testModel).extracting(Model::getContents, Model::size)
+                .containsExactly("10 1.1 -3.12345 -3.123456789 -3.123456789 -3.0123456789", 6);
     }
 }

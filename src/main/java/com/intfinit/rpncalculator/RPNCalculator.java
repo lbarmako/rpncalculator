@@ -45,7 +45,7 @@ public class RPNCalculator {
                         performCommands(lineScanner);
                     }
                 }
-                LOGGER.info(model.toString());
+                LOGGER.info("stack: {}", model.getContents());
             }
         }
     }
@@ -80,7 +80,7 @@ public class RPNCalculator {
             }
         } catch (RPNCalculatorException e) {
             MatchResult mr = lineScanner.match();
-            LOGGER.warn("operator " + token + " (position: " + mr.end() + "): insufficient parameters");
+            LOGGER.warn("operator {} (position: {}): insufficient parameters", token, mr.end());
         }
     }
 }

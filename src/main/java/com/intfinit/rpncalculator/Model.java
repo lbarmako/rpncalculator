@@ -69,9 +69,7 @@ public class Model {
         return results.size();
     }
 
-    @Override
-    public String toString() {
-        return "stack: " + results.stream().map(BIG_DEC_DISPLAY_FORMAT::format)
-                .collect(joining(" "));
+    public String getContents() {
+        return results.stream().map(BIG_DEC_DISPLAY_FORMAT::format).collect(joining(" "));
     }
 }

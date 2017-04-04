@@ -20,15 +20,13 @@ public class DivideCommandTest {
 
     @Test(expected = NullPointerException.class)
     public void executeWithNullModel() throws RPNCalculatorException {
-        model = null;
-        Command cmd = new DivideCommand(model);
+        Command cmd = new DivideCommand(null);
         cmd.execute();
     }
 
     @Test(expected = NullPointerException.class)
     public void undoWithNullModel() throws RPNCalculatorException {
-        model = null;
-        Command cmd = new DivideCommand(model);
+        Command cmd = new DivideCommand(null);
         cmd.undo();
     }
 
@@ -57,7 +55,7 @@ public class DivideCommandTest {
         model.push(new BigDecimal(3));
         Command cmd = new DivideCommand(model);
         cmd.execute();
-        assertThat(model.toString()).isEqualTo("stack: 3");
+        assertThat(model.getContents()).isEqualTo("3");
     }
 
     @Test
@@ -67,7 +65,7 @@ public class DivideCommandTest {
         Command cmd = new DivideCommand(model);
         cmd.execute();
         cmd.undo();
-        assertThat(model.toString()).isEqualTo("stack: 9 3");
+        assertThat(model.getContents()).isEqualTo("9 3");
     }
 
     @Test(expected = RPNCalculatorException.class)
@@ -76,7 +74,7 @@ public class DivideCommandTest {
         model.push(new BigDecimal(0));
         Command cmd = new DivideCommand(model);
         cmd.execute();
-        assertThat(model.toString()).isEqualTo("stack: 3");
+        assertThat(model.getContents()).isEqualTo("3");
     }
 
     @Test(expected = RPNCalculatorException.class)
@@ -85,6 +83,6 @@ public class DivideCommandTest {
         model.push(new BigDecimal(0.00));
         Command cmd = new DivideCommand(model);
         cmd.execute();
-        assertThat(model.toString()).isEqualTo("stack: 3");
+        assertThat(model.getContents()).isEqualTo("3");
     }
 }

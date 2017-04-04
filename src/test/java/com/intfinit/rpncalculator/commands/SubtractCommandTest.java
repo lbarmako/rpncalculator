@@ -55,7 +55,7 @@ public class SubtractCommandTest {
         model.push(new BigDecimal(1));
         Command cmd = new SubtractCommand(model);
         cmd.execute();
-        assertThat(model.toString()).isEqualTo("stack: 0");
+        assertThat(model.getContents()).isEqualTo("0");
     }
 
     @Test
@@ -65,6 +65,6 @@ public class SubtractCommandTest {
         Command cmd = new SubtractCommand(model);
         cmd.execute();
         cmd.undo();
-        assertThat(model.toString()).isEqualTo("stack: 1 1");
+        assertThat(model.getContents()).isEqualTo("1 1");
     }
 }

@@ -20,15 +20,13 @@ public class MultiplyCommandTest {
 
     @Test(expected = NullPointerException.class)
     public void executeWithNullModel() throws RPNCalculatorException {
-        model = null;
-        Command cmd = new MultiplyCommand(model);
+        Command cmd = new MultiplyCommand(null);
         cmd.execute();
     }
 
     @Test(expected = NullPointerException.class)
     public void undoWithNullModel() throws RPNCalculatorException {
-        model = null;
-        Command cmd = new MultiplyCommand(model);
+        Command cmd = new MultiplyCommand(null);
         cmd.undo();
     }
 
@@ -57,7 +55,7 @@ public class MultiplyCommandTest {
         model.push(new BigDecimal(3));
         Command cmd = new MultiplyCommand(model);
         cmd.execute();
-        assertThat(model.toString()).isEqualTo("stack: 6");
+        assertThat(model.getContents()).isEqualTo("6");
     }
 
     @Test
@@ -67,6 +65,6 @@ public class MultiplyCommandTest {
         Command cmd = new MultiplyCommand(model);
         cmd.execute();
         cmd.undo();
-        assertThat(model.toString()).isEqualTo("stack: 2 3");
+        assertThat(model.getContents()).isEqualTo("2 3");
     }
 }

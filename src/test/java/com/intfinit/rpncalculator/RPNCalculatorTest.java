@@ -30,18 +30,18 @@ public class RPNCalculatorTest {
     public void sampleTest1() throws RPNCalculatorException {
         controller.executeCommand(new NumberCommand(new BigDecimal(5), model));
         controller.executeCommand(new NumberCommand(new BigDecimal(2), model));
-        assertThat(model.toString()).isEqualTo("stack: 5 2");
+        assertThat(model.getContents()).isEqualTo("5 2");
     }
 
     @Test
     public void sampleTest2() throws RPNCalculatorException {
         controller.executeCommand(new NumberCommand(new BigDecimal(2), model));
         controller.executeCommand(new SqrtCommand(model));
-        assertThat(model.toString()).isEqualTo("stack: 1.4142135623");
+        assertThat(model.getContents()).isEqualTo("1.4142135623");
         controller.executeCommand(new ClearCommand(model));
         controller.executeCommand(new NumberCommand(new BigDecimal(9), model));
         controller.executeCommand(new SqrtCommand(model));
-        assertThat(model.toString()).isEqualTo("stack: 3");
+        assertThat(model.getContents()).isEqualTo("3");
     }
 
     @Test
@@ -49,12 +49,12 @@ public class RPNCalculatorTest {
         controller.executeCommand(new NumberCommand(new BigDecimal(5), model));
         controller.executeCommand(new NumberCommand(new BigDecimal(2), model));
         controller.executeCommand(new SubtractCommand(model));
-        assertThat(model.toString()).isEqualTo("stack: 3");
+        assertThat(model.getContents()).isEqualTo("3");
         controller.executeCommand(new NumberCommand(new BigDecimal(3), model));
         controller.executeCommand(new SubtractCommand(model));
-        assertThat(model.toString()).isEqualTo("stack: 0");
+        assertThat(model.getContents()).isEqualTo("0");
         controller.executeCommand(new ClearCommand(model));
-        assertThat(model.toString()).isEqualTo("stack: ");
+        assertThat(model.getContents()).isEqualTo("");
     }
 
     @Test
@@ -63,19 +63,19 @@ public class RPNCalculatorTest {
         controller.executeCommand(new NumberCommand(new BigDecimal(4), model));
         controller.executeCommand(new NumberCommand(new BigDecimal(3), model));
         controller.executeCommand(new NumberCommand(new BigDecimal(2), model));
-        assertThat(model.toString()).isEqualTo("stack: 5 4 3 2");
+        assertThat(model.getContents()).isEqualTo("5 4 3 2");
 
         controller.undo();
         controller.undo();
         controller.executeCommand(new MultiplyCommand(model));
-        assertThat(model.toString()).isEqualTo("stack: 20");
+        assertThat(model.getContents()).isEqualTo("20");
 
         controller.executeCommand(new NumberCommand(new BigDecimal(5), model));
         controller.executeCommand(new MultiplyCommand(model));
-        assertThat(model.toString()).isEqualTo("stack: 100");
+        assertThat(model.getContents()).isEqualTo("100");
 
         controller.undo();
-        assertThat(model.toString()).isEqualTo("stack: 20 5");
+        assertThat(model.getContents()).isEqualTo("20 5");
     }
 
     @Test
@@ -84,14 +84,14 @@ public class RPNCalculatorTest {
         controller.executeCommand(new NumberCommand(new BigDecimal(12), model));
         controller.executeCommand(new NumberCommand(new BigDecimal(2), model));
         controller.executeCommand(new DivideCommand(model));
-        assertThat(model.toString()).isEqualTo("stack: 7 6");
+        assertThat(model.getContents()).isEqualTo("7 6");
 
         controller.executeCommand(new MultiplyCommand(model));
-        assertThat(model.toString()).isEqualTo("stack: 42");
+        assertThat(model.getContents()).isEqualTo("42");
 
         controller.executeCommand(new NumberCommand(new BigDecimal(4), model));
         controller.executeCommand(new DivideCommand(model));
-        assertThat(model.toString()).isEqualTo("stack: 10.5");
+        assertThat(model.getContents()).isEqualTo("10.5");
     }
 
     @Test
@@ -101,16 +101,16 @@ public class RPNCalculatorTest {
         controller.executeCommand(new NumberCommand(new BigDecimal(3), model));
         controller.executeCommand(new NumberCommand(new BigDecimal(4), model));
         controller.executeCommand(new NumberCommand(new BigDecimal(5), model));
-        assertThat(model.toString()).isEqualTo("stack: 1 2 3 4 5");
+        assertThat(model.getContents()).isEqualTo("1 2 3 4 5");
 
         controller.executeCommand(new MultiplyCommand(model));
-        assertThat(model.toString()).isEqualTo("stack: 1 2 3 20");
+        assertThat(model.getContents()).isEqualTo("1 2 3 20");
 
         controller.executeCommand(new ClearCommand(model));
         controller.executeCommand(new NumberCommand(new BigDecimal(3), model));
         controller.executeCommand(new NumberCommand(new BigDecimal(4), model));
         controller.executeCommand(new SubtractCommand(model));
-        assertThat(model.toString()).isEqualTo("stack: -1");
+        assertThat(model.getContents()).isEqualTo("-1");
     }
 
     @Test
@@ -120,31 +120,31 @@ public class RPNCalculatorTest {
         controller.executeCommand(new NumberCommand(new BigDecimal(3), model));
         controller.executeCommand(new NumberCommand(new BigDecimal(4), model));
         controller.executeCommand(new NumberCommand(new BigDecimal(5), model));
-        assertThat(model.toString()).isEqualTo("stack: 1 2 3 4 5");
+        assertThat(model.getContents()).isEqualTo("1 2 3 4 5");
 
         controller.executeCommand(new MultiplyCommand(model));
         controller.executeCommand(new MultiplyCommand(model));
         controller.executeCommand(new MultiplyCommand(model));
         controller.executeCommand(new MultiplyCommand(model));
-        assertThat(model.toString()).isEqualTo("stack: 120");
+        assertThat(model.getContents()).isEqualTo("120");
     }
 
     @Test
     public void sampleTest8() throws RPNCalculatorException {
 
-        controller.executeCommand(new NumberCommand(new BigDecimal(1), model));
-        controller.executeCommand(new NumberCommand(new BigDecimal(2), model));
-        controller.executeCommand(new NumberCommand(new BigDecimal(3), model));
-        controller.executeCommand(new MultiplyCommand(model));
-        controller.executeCommand(new NumberCommand(new BigDecimal(5), model));
-        controller.executeCommand(new AddCommand(model));
-        controller.executeCommand(new MultiplyCommand(model));
         assertThatThrownBy(() -> {
+            controller.executeCommand(new NumberCommand(new BigDecimal(1), model));
+            controller.executeCommand(new NumberCommand(new BigDecimal(2), model));
+            controller.executeCommand(new NumberCommand(new BigDecimal(3), model));
+            controller.executeCommand(new MultiplyCommand(model));
+            controller.executeCommand(new NumberCommand(new BigDecimal(5), model));
+            controller.executeCommand(new AddCommand(model));
+            controller.executeCommand(new MultiplyCommand(model));
             controller.executeCommand(new MultiplyCommand(model));
             controller.executeCommand(new NumberCommand(new BigDecimal(6), model));
             controller.executeCommand(new NumberCommand(new BigDecimal(5), model));
         }).isInstanceOf(RPNCalculatorException.class).hasMessage("insufficient parameters.");
 
-        assertThat(model.toString()).isEqualTo("stack: 11");
+        assertThat(model.getContents()).isEqualTo("11");
     }
 }

@@ -53,7 +53,7 @@ public class SqrtCommandTest {
         model.push(new BigDecimal(9));
         Command cmd = new SqrtCommand(model);
         cmd.execute();
-        assertThat(model.toString()).isEqualTo("stack: 3");
+        assertThat(model.getContents()).isEqualTo("3");
     }
 
     @Test
@@ -62,7 +62,7 @@ public class SqrtCommandTest {
         Command cmd = new SqrtCommand(model);
         cmd.execute();
         cmd.undo();
-        assertThat(model.toString()).isEqualTo("stack: 9");
+        assertThat(model.getContents()).isEqualTo("9");
     }
 
     @Test(expected = RPNCalculatorException.class)

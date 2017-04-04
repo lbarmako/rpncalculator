@@ -26,6 +26,15 @@ places (or less if it causes no loss of precision).
 - After displaying the warning, all further processing of the string terminates and the current state of the stack is 
 displayed.
 
+# Sample Example Corrections
+- **Example 4** has incorrect answer as per requirements below. `undo` undoes the previous operation, 
+thus the final answer to that example should be `stack: 20 5`.
+See _com.intfinit.rpncalculator.RPNCalculatorTest.sampleTest4_
+- Example 7 has incorrect answer as per requirements below.
+The final answer to that example should be `stack: 120`
+See _com.intfinit.rpncalculator.RPNCalculatorTest.sampleTest7_
+
+
 # Deliverables
 - The solution submitted should include structure, source code, configuration and any tests or test code you deem 
 necessary - no need to package class files.
@@ -47,5 +56,5 @@ to push again.
 `./gradlew build` will run tests.
 
  # Run Locally
- `./gradlew runShadow` will build shadow jar containing all dependencies and execute it.
-  This also means that the app can be easily run using `java -jar <jar name>` syntax.
+ `java -jar build\libs\rpncalculator-1.0.0-SNAPSHOT-all.jar` or
+ using gradle `./gradlew runShadow` will build shadow jar containing all dependencies and execute it.
