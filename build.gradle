@@ -1,0 +1,113 @@
+buildscript {
+    ext {
+        buildTimestamp = System.getenv("PIPELINE_BUILD_TIMESTAMP") ?: new Date().format('yyyyMMddHHmmss')
+    }
+
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath(
+                "com.github.jengelman.gradle.plugins:shadow:$shadowVersion"
+        )
+    }
+}
+
+defaultTasks 'build'
+
+allprojects {
+    version = '1.0.0-SNAPSHOT'
+    group = 'com.intfinit'
+    description = "Command-line based RPN caculator."
+    ext.artifactName = "${project.name}"
+
+
+    apply from: "${rootDir}/gradle/java-defaults.gradle"
+
+    apply plugin: 'jacoco'
+    jacoco {
+        toolVersion = "0.7.6.201602180812"
+    }
+
+    apply plugin: 'maven'
+    apply plugin: 'java'
+    apply plugin: 'application'
+    apply plugin: 'checkstyle'
+
+    repositories {
+        mavenCentral()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+
+    dependencies {
+        compile(
+                "org.slf4j:slf4j-api:$slf4jVersion",
+                "org.slf4j:slf4j-simple:$slf4jVersion"
+        )
+        testCompile(
+                "org.assertj:assertj-core:$assertJVersion",
+                "junit:junit:$junitVersion"
+        )
+    }
+
+    apply plugin: 'com.github.johnrengelman.shadow'
+
+    jacocoTestReport {
+        reports {
+            xml.enabled = true
+            csv.enabled = false
+            html.enabled = true
+            html.destination "${buildDir}/jacocoHtml"
+        }
+    }
+
+    checkstyle {
+        configFile = new File("$rootDir/build-config/checkstyle.xml")
+        configProperties = [
+                "checkstyleConfigDir": "$rootDir/build-config"
+        ]
+        toolVersion = checkstyleToolVersion
+    }
+
+    tasks.withType(Checkstyle) {
+        mustRunAfter test, testClasses
+    }
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+    compileJava.options.incremental = true
+
+    //packaging tests
+    task packageTests(type: Jar) {
+        from sourceSets.test.output
+        classifier = 'tests'
+    }
+    artifacts.archives packageTests
+
+    mainClassName = "com.intfinit.rpncalculator.RPNCalculator"
+
+    runShadow {
+        standardInput = System.in
+    }
+
+    jar {
+        manifest {
+            attributes("Main-Class": mainClassName, "Implementation-Version": version)
+        }
+        baseName 'rpncalculator'
+    }
+
+    build.finalizedBy shadowJar
+}
+
+
+task runConfigurations(type: Copy) {
+    from('build-config/runConfigurations')
+    into('.idea/runConfigurations')
+    include('*.xml')
+}
+

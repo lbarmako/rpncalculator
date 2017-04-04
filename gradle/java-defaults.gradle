@@ -1,0 +1,17 @@
+apply plugin: 'java'
+
+dependencies {
+    testCompile(
+            "junit:junit:$junitVersion",
+            "org.assertj:assertj-core:$assertJVersion"
+    )
+}
+
+apply from: "${rootDir}/gradle/jar.gradle"
+
+
+test {
+    include 'com/intfinit/rpncalculator/**'
+    reports.html.enabled = true
+    maxParallelForks = Runtime.getRuntime().availableProcessors() - 1
+}
